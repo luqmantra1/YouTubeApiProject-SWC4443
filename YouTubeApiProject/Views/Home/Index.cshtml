@@ -1,0 +1,240 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Personal - Start Bootstrap Theme</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Custom Google font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="css/styles.css" rel="stylesheet" />
+</head>
+<style>
+    /* Navbar Background Gradient */
+.bg-gradient {
+    background: linear-gradient(90deg, #007bff 0%, #28a745 100%);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Navbar Brand */
+.navbar-brand {
+    font-size: 24px;
+    font-weight: 700;
+    transition: color 0.3s ease;
+}
+
+.navbar-brand:hover {
+    color: #ffd700; /* Change to gold on hover */
+}
+
+/* Navbar Toggler */
+.navbar-toggler {
+    background-color: transparent;
+}
+
+.navbar-toggler-icon {
+    background-image: url('data:image/svg+xml;charset=UTF8,%3Csvg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath stroke="rgba%28255,255,255,1%29" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" d="M4 7h22M4 15h22M4 23h22"/%3E%3C/svg%3E');
+}
+
+/* Navbar Links */
+.navbar-nav .nav-link {
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+    border-radius: 50px;
+}
+
+.navbar-nav .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #ffd700; /* Hover effect for links */
+}
+
+/* Active Link */
+.navbar-nav .nav-link.active {
+    background-color: rgba(255, 255, 255, 0.3);
+    color: #fff;
+}
+
+/* Mobile Navbar */
+@@media (max-width: 992px) {
+    .navbar-toggler {
+        border-color: transparent;
+    }
+
+    .navbar-toggler:focus {
+        box-shadow: none;
+    }
+
+    .navbar-collapse {
+        background-color: #007bff; /* Navbar collapse background for mobile */
+        padding: 15px;
+    }
+
+    .navbar-nav .nav-link {
+        padding: 10px 0;
+    }
+}
+
+    .custom-profile-container {
+        position: fixed;
+        top: 20px; /* Adjust the top positioning */
+        right: 20px; /* Adjust the right positioning */
+        z-index: 1000; /* Keeps it above other elements */
+    }
+
+    .custom-profile-img {
+        width: 50px; /* Adjust the size of the image */
+        height: 50px;
+        border-radius: 50%; /* Makes the image round */
+        border: 2px solid #fff; /* Optional: Adds a border around the image */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Optional: Adds a subtle shadow */
+        cursor: pointer; /* Adds a pointer cursor on hover */
+        object-fit: cover; /* Ensures the image covers the area neatly */
+    }
+
+        .custom-profile-img:hover {
+            opacity: 0.8; /* Slight hover effect */
+
+            #api-explanation {
+    background-image: url('path_to_your_background_image.jpg'); /* Add a background image if needed */
+    background-size: cover;
+    background-position: center;
+}
+#api-title {
+        font-size: 2rem; /* Adjust to your preference */
+    }
+
+    /* Optional: Customize button appearance */
+    .btn {
+        border-radius: 0.25rem; /* Slightly rounded corners */
+    }
+</style>
+<script>
+    function changeContent(button) {
+        // Get the title and description from the data attributes
+        const newTitle = button.getAttribute('data-title');
+        const newDescription = button.getAttribute('data-description');
+
+        // Update the title and description in the HTML
+        document.getElementById('api-title').innerText = newTitle;
+        document.getElementById('api-description').innerText = newDescription;
+    }
+</script>
+<body class="d-flex flex-column h-100" style="background-color:#E2DFD2;">
+    <main class="flex-shrink-0">
+        @* <!-- Navigation -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-gradient">
+            <div class="container px-5">
+                <a class="navbar-brand text-black fw-bold" asp-controller="Home" asp-action="Index">Luqmantra</a>
+                <button class="navbar-toggler text-white border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+                    <ul class="navbar-nav">
+                    <li class="nav-item">
+                    <a class="nav-link text-white" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link text-white" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link text-white" href="#services">Services</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link text-white" href="#contact">Contact</a>
+                    </li>
+                    </ul>
+                </div>
+            </div>
+        </nav> *@
+
+        <div class="custom-profile-container">
+            <a href="/profile">
+                <img src="~/images/manroza2.png" alt="Profile Picture" class="custom-profile-img">
+            </a>
+        </div>
+
+        <!-- Header-->
+        <header class="py-5">
+            <div class="container px-5 pb-5">
+                <div class="row gx-5 align-items-center">
+                    <div class="col-xxl-5">
+                        <!-- Header text content-->
+                        <div class="text-center text-xxl-start">
+                            <div class="badge bg-gradient-primary-to-secondary text-white mb-4">
+                                <div class="text-uppercase">Listen &middot; Dance &middot; Hardstyle</div>
+                            </div>
+                            <div class="fs-5 fw-light text-muted">Understanding APIs</div> <!-- Changed to fs-5 -->
+                            <h1 class="display-5 fw-bolder mb-4">
+                                <!-- Changed to display-5 -->
+                                <span class="text-gradient d-inline" id="api-title">What is API?</span>
+                            </h1>
+                            <p id="api-description">
+                                An API (Application Programming Interface) is a set of rules and protocols that allows different software applications to communicate with each other. It defines the methods and data formats applications can use to request and exchange information, enabling developers to integrate various services and functionalities into their own applications seamlessly.
+                            </p>
+                            <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xxl-start mb-3">
+                                <a class="btn btn-outline-dark btn-sm px-4 py-2 fs-6 fw-bold"
+                                        href="javascript:void(0);"
+                                        data-title="What is API?"
+                                   data-description="An API (Application Programming Interface) is a set of rules and protocols that allows different software applications to communicate with each other. It defines the methods and data formats applications can use to request and exchange information, enabling developers to integrate various services and functionalities into their own applications seamlessly."
+                                   onclick="changeContent(this)">What is API?</a>
+                                <a class="btn btn-outline-dark btn-sm px-4 py-2 fs-6 fw-bold"  
+                                        href="javascript:void(0);"
+                                        data-title="Purpose of the YouTube API"
+                                   data-description="The YouTube API enables developers to access and integrate YouTube features into their applications. It allows users to search for videos, retrieve video information, manage playlists, upload videos, and access user subscriptions, enhancing the functionality and interactivity of websites and apps by leveraging YouTube's vast content and services."
+                                        onclick="changeContent(this)">Purpose of the YouTube API</a>
+                                <a class="btn btn-outline-dark btn-sm px-4 py-2 fs-6 fw-bold" 
+                                        href="javascript:void(0);"
+                                        href="javascript:void(0);"
+                                        data-title="What my Website Can Do"
+                                        data-description="My website can search YouTube videos, play videos, and provide detailed information about each video."
+                                        onclick="changeContent(this)">What my Website Can Do</a>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="col-xxl-7">
+                        <!-- Header profile picture-->
+                        <div class="d-flex justify-content-center mt-5 mt-xxl-0">
+                            <div class="profile bg-gradient-primary-to-secondary">
+                                <!-- TIP: For best results, use a photo with a transparent background like the demo example below-->
+                                <!-- Watch a tutorial on how to do this on YouTube (link)-->
+                                <img class="profile-img" src="~/images/manroza1.png" alt="..." />
+
+                               
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+       
+       
+
+
+
+
+    </main>
+    
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="js/scripts.js"></script>
+</body>
+</html>

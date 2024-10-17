@@ -1,0 +1,594 @@
+﻿@model List<YouTubeApiProject.Models.YouTubeVideoModel>
+<style>
+    /* Global Styles */
+    html, body {
+        height: 100%; /* Ensure the body covers the full height of the viewport */
+        margin: 0; /* Remove default margins */
+        display: flex; /* Set the body as a flex container */
+        flex-direction: column; /* Arrange children vertically */
+        scroll-behavior : smooth;
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+        padding: 0;
+        position: relative; /* Ensure positioning is relative */
+    }
+
+    /* Background container */
+    .background {
+        position: fixed; /* Fixed positioning to cover the entire viewport */
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: url('@Url.Content("/images/defqon1.jpg")'); /* Set your background image path */
+        background-color: #e0e1dd; /* Fallback background color */
+        background-size: cover; /* Ensure the image covers the whole background */
+        background-repeat: no-repeat; /* Prevent the image from repeating */
+        background-position: center; /* Center the image */
+        filter: blur(4px); /* Apply blur effect */
+        z-index: -1; /* Keep it behind other content */
+    }
+
+    .container {
+        position: relative; /* Ensure the content is above the background */
+        z-index: 1; /* Ensure the content stays above the background */
+        padding: 2rem; /* Optional: Add some padding for better layout */
+    }
+
+    h2, p, input, button {
+        position: relative;
+        z-index: 2; /* Keep text and buttons above the background */
+    }
+
+
+    .container {
+        filter: none; /* Remove blur from the main content */
+        position: relative;
+        z-index: 1; /* Ensure the content stays above the background */
+    }
+
+
+    footer {
+        font-family: 'Poppins', cursive, sans-serif;
+        background-color: transparent; /* Change this to your desired footer color */
+        color: white; /* Text color for the footer */
+        font-size:18px;
+        text-align: center; /* Center the footer text */
+        padding: 10px 0; /* Add some padding */
+    }
+
+
+    /* Page Title */
+    h2 {
+        font-family: 'Poppins', cursive, sans-serif;
+        color: white;
+        font-weight: 700;
+        margin-bottom: 40px;
+        text-align: center;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Search Form Styling */
+    form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 40px;
+    }
+
+    form input[type="text"] {
+        border-radius: 50px;
+        padding: 15px 20px;
+        font-size: 18px;
+        border: 2px solid #ddd;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        width: 60%;
+        background-color: #fff;
+    }
+
+    form input[type="text"]:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 12px rgba(0, 123, 255, 0.25);
+        outline: none;
+        transform: scale(1.05);
+    }
+
+    form button {
+        border-radius: 50px;
+        padding: 12px 30px;
+        font-size: 16px;
+        margin-left: 15px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        border: none;
+        background-color: #28a745;
+        color: white;
+        cursor: pointer;
+    }
+
+    form button:hover {
+        background-color: #218838;
+        transform: scale(1.05);
+    }
+
+    /* Video Card Styling */
+    .card {
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        background-color: #fff;
+        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+        position: relative;
+    }
+
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+            .card:hover img {
+                transform: scale(1.05);
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            }
+
+    .watch-video-overlay {
+        background: linear-gradient(135deg, rgba(0, 123, 255, 0.8), rgba(40, 167, 69, 0.8));
+    }
+
+    .video-card:hover .watch-video-overlay {
+        opacity: 1;
+        background: linear-gradient(135deg, rgba(255, 215, 0, 0.9), rgba(255, 69, 0, 0.9));
+    }
+
+
+    .card img {
+        height: 200px;
+        object-fit: cover;
+        transition: all 0.3s ease;
+        width: 100%;
+        border-bottom: 2px solid #007bff;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .card-title {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #333;
+        transition: color 0.3s ease;
+    }
+
+    .card-title:hover {
+        color: #007bff;
+    }
+
+    .card-text {
+        font-size: 14px;
+        color: #666;
+        height: 50px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .card-footer {
+        background-color: transparent;
+        border-top: none;
+        padding: 15px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .card-footer a {
+        border-radius: 50px;
+        padding: 10px 20px;
+        font-size: 14px;
+        background-color: #007bff;
+        color: #fff;
+        text-align: center;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .card-footer a:hover {
+        background-color: #0056b3;
+        transform: scale(1.05);
+    }
+
+    /* Loader animation */
+    .loader {
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid #28a745;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 0.8s linear infinite;
+}
+
+@@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+    /* Alert Styling */
+    .alert {
+        border-radius: 30px;
+        background-color: #fff5f5;
+        color: #d9534f;
+        font-size: 16px;
+        padding: 20px;
+        text-align: center;
+        margin-top: 20px;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 0.5s forwards;
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    /* Responsive Design */
+    @@media only screen and (max-width: 768px) {
+        form input[type="text"] {
+            width: 80%;
+        }
+
+        .card img {
+            height: 150px;
+        }
+    }
+
+    @@media only screen and (max-width: 576px) {
+        form input[type="text"] {
+            width: 100%;
+        }
+
+        form button {
+            margin-left: 10px;
+        }
+    }
+
+    /* Card hover overlay styling */
+    .video-card {
+        position: relative;
+    }
+
+    .watch-video-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.6);
+        opacity: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: opacity 0.3s ease;
+        border-radius: 15px;
+    }
+
+    .video-card:hover .watch-video-overlay {
+        opacity: 1;
+    }
+
+    .watch-video-link {
+        color: white;
+        font-size: 18px;
+        text-decoration: none;
+        background-color: #007bff;
+        padding: 10px 20px;
+        border-radius: 50px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+        .watch-video-link:hover {
+            background-color: #5D5D5D;
+            transform: scale(1.1);
+        }
+
+/* Navbar Background Gradient */
+.bg-gradient {
+    background: linear-gradient(90deg, #007bff 0%, #28a745 100%);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Navbar Brand */
+    .navbar-brand {
+        transition: all 0.3s ease; /* Smooth transition for hover effect */
+    }
+
+        .navbar-brand:hover {
+            color: #007bff; /* Change to your desired color on hover */
+            text-shadow: 1px 1px 5px rgba(0, 123, 255, 0.5); /* Optional: Add text shadow */
+            transform: scale(1.1); /* Optional: Slightly scale the text */
+        }
+
+
+/* Navbar Toggler */
+.navbar-toggler {
+    background-color: transparent;
+}
+
+.navbar-toggler-icon {
+    background-image: url('data:image/svg+xml;charset=UTF8,%3Csvg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath stroke="rgba%28255,255,255,1%29" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" d="M4 7h22M4 15h22M4 23h22"/%3E%3C/svg%3E');
+}
+
+/* Navbar Links */
+    .navbar-nav .nav-link {
+        position: relative;
+        padding: 10px 20px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        border-radius: 50px;
+    }
+
+        .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            background: #ffd700;
+            bottom: 0;
+            left: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+
+.navbar-nav .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #ffd700; /* Hover effect for links */
+}
+
+/* Active Link */
+.navbar-nav .nav-link.active {
+    background-color: rgba(255, 255, 255, 0.3);
+    color: #fff;
+}
+
+/* Mobile Navbar */
+@@media (max-width: 992px) {
+    .navbar-toggler {
+        border-color: transparent;
+    }
+
+    .navbar-toggler:focus {
+        box-shadow: none;
+    }
+
+    .navbar-collapse {
+        background-color: #007bff; /* Navbar collapse background for mobile */
+        padding: 15px;
+    }
+
+    .navbar-nav .nav-link {
+        padding: 10px 0;
+    }
+}
+
+    .video-card {
+        background-color: #333;
+        border: none;
+    }
+
+        .video-card .card-body {
+            background-color: #1e1e1e;
+        }
+
+        .video-card h5 {
+            color: #f1f1f1;
+        }
+
+        .video-card p {
+            color: #bbb;
+        }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    /* Modal Styling */
+    .video-modal-content {
+        background-color: #1e1e1e;
+        border-radius: 10px;
+        border: none;
+    }
+
+    .close {
+        color: white;
+        font-size: 1.5rem;
+    }
+
+    .embed-responsive-16by9 {
+        padding-bottom: 56.25%;
+        position: relative;
+    }
+
+        .embed-responsive-16by9 iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+    .modal-header {
+        border-bottom: 0;
+    }
+
+    .profile-container {
+        position: fixed;
+        top: 20px; /* Adjust the top positioning */
+        right: 20px; /* Adjust the right positioning */
+        z-index: 1000; /* Keeps it above other elements */
+    }
+
+    .profile-img {
+        width: 50px; /* Adjust the size of the image */
+        height: 50px;
+        border-radius: 50%; /* Makes the image round */
+        border: 2px solid #fff; /* Optional: Adds a border around the image */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Optional: Adds a subtle shadow */
+        cursor: pointer; /* Adds a pointer cursor on hover */
+        object-fit: cover; /* Ensures the image covers the area neatly */
+    }
+
+        .profile-img:hover {
+            opacity: 0.8; /* Slight hover effect */
+        }
+
+        
+</style>
+
+<script>
+    // Ensure the script runs when the document is ready
+    document.addEventListener("DOMContentLoaded", function () {
+        // When the modal is triggered (shown)
+        var videoModal = document.getElementById('videoModal');
+
+        videoModal.addEventListener('show.bs.modal', function (event) {
+            // The button that triggered the modal
+            var button = event.relatedTarget;
+            // Extract the videoId from the button's data-videoid attribute
+            var videoId = button.getAttribute('data-videoid');
+
+            // Get the iframe element where the video will be played
+            var videoIframe = document.getElementById('videoIframe');
+
+            // Set the source of the iframe to the YouTube embed URL with the videoId
+            var videoUrl = 'https://www.youtube.com/embed/' + videoId;
+
+            videoIframe.src = videoUrl;
+        });
+
+        // Clear the iframe src when the modal is hidden
+        videoModal.addEventListener('hide.bs.modal', function () {
+            var videoIframe = document.getElementById('videoIframe');
+            videoIframe.src = ''; // Clear the video URL when modal is hidden
+        });
+    });
+   
+</script>
+
+<div class="profile-container">
+    <img src="/images/manroza2.png" alt="Profile Picture" class="profile-img">
+</div>
+@* <!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light bg-gradient">
+    <div class="container px-5">
+        <a class="navbar-brand text-black fw-bold" asp-controller="Home" asp-action="Index">Home</a>
+        <button class="navbar-toggler text-white border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link text-white" asp-controller="Home" asp-action="Index">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#about">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#services">Services</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav> *@
+
+<!-- Background Div -->
+<div class="background"></div>
+
+<!-- Main Content -->
+<div class="container my-5">
+    <h2 class="text-center mb-4">Try and search something</h2>
+    <form asp-action="Search" method="post" class="d-flex justify-content-center mb-5">
+        <input type="text" name="query" placeholder="Search for videos..." class="form-control w-50 shadow-sm" />
+        <button type="submit" class="btn btn-outline-dark btn-lg px-4 py-2 fs-5 fw-bolder">Search</button>
+    </form>
+
+    <!-- Video Results -->
+    @if (Model != null && Model.Any())
+    {
+        <div class="row">
+            @foreach (var video in Model)
+            {
+                <div class="col-md-4 mb-4">
+    <div class="card h-100 shadow-sm position-relative video-card">
+        <img src="@video.ThumbnailUrl" class="card-img-top" alt="@video.Title" />
+                        <div class="card-body">
+                            <h5 class="card-title">@video.Title</h5>
+                            <p class="card-text text-truncate">@video.Description</p>
+                            <p class="card-text text-truncate"><strong>Publisher:</strong> @video.Publisher</p> <!-- Display Publisher -->
+                        </div>
+
+        <div class="watch-video-overlay">
+            <!-- Passing the video ID to data-videoid -->
+            <a href="javascript:void(0)" class="watch-video-link" data-videoid="@video.VideoId" data-bs-toggle="modal" data-bs-target="#videoModal">Watch Video</a>
+        </div>
+    </div>
+</div>
+
+            }
+        </div>
+    }
+    else
+    {
+       @*  <div class="alert alert-info text-center" role="alert">
+            Please Type a title and click search ty!.
+        </div> *@
+    }
+</div>
+
+
+<!-- Modal for Embedded Video -->
+<div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="videoModalLabel">Watch Video</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="embed-responsive embed-responsive-16by9">
+                    <iframe id="videoIframe" class="embed-responsive-item" width="100%" height="315" src="" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<footer>
+    <p>&copy; 2024 Luqmantra. All rights reserved.</p>
+</footer>
+
+
